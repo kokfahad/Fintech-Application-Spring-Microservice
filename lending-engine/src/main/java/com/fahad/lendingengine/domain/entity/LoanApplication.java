@@ -1,27 +1,32 @@
 package com.fahad.lendingengine.domain.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.Duration;
 import java.util.Objects;
 
 @Entity
 public final class LoanApplication {
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    private final int amount;
-    private final User borrower;
-    private final Duration repaymentTerm;
-    private final double interestRate;
+    private int amount;
+    @ManyToOne
+    private User borrower;
+    private int repaymentTermInDays;
+    private double interestRate;
 
-//    public LoanRequest() {
-//    }
+    public  LoanApplication() {
+    }
 
-    public LoanApplication(int amount, User borrower, Duration repaymentTerm,
+    public Long getId() {
+        return id;
+    }
+
+    public LoanApplication(int amount, User borrower, int repaymentTermInDays,
                            double interestRate) {
         this.amount = amount;
         this.borrower = borrower;
-        this.repaymentTerm = repaymentTerm;
+        this.repaymentTermInDays = repaymentTermInDays;
         this.interestRate = interestRate;
     }
 
@@ -33,8 +38,8 @@ public final class LoanApplication {
         return borrower;
     }
 
-    public Duration getRepaymentTerm() {
-        return repaymentTerm;
+    public int getRepaymentTerm() {
+        return repaymentTermInDays;
     }
 
     public double getInterestRate() {
@@ -46,12 +51,12 @@ public final class LoanApplication {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LoanApplication that = (LoanApplication) o;
-        return amount == that.amount && Double.compare(that.interestRate, interestRate) == 0 && Objects.equals(borrower, that.borrower) && Objects.equals(repaymentTerm, that.repaymentTerm);
+        return amount == that.amount && Double.compare(that.interestRate, interestRate) == 0 && Objects.equals(borrower, that.borrower) && Objects.equals(repaymentTermInDays, that.repaymentTermInDays);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(amount, borrower, repaymentTerm, interestRate);
+        return Objects.hash(amount, borrower, repaymentTermInDays, interestRate);
     }
 
     @Override
@@ -59,7 +64,7 @@ public final class LoanApplication {
         return "LoanRequest{" +
                 "amount=" + amount +
                 ", borrower=" + borrower +
-                ", repaymentTerm=" + repaymentTerm +
+                ", repaymentTerm=" + repaymentTermInDays +
                 ", interestRate=" + interestRate +
                 '}';
     }
