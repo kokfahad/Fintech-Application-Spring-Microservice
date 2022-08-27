@@ -17,13 +17,13 @@ public class LoanAplicationAdapter {
     @Autowired
     private UserRepository userRepository;
 
-    public LoanApplication transform(LoanRequest request){
-        Optional<User>userOptional = userRepository.findById(request.getBorrowerId());
+    public LoanApplication transform(LoanRequest request, User borrower){
+        Optional<User>userOptional = userRepository.findById(borrower.getUsername());
         if (userOptional.isPresent()){
             return new LoanApplication(request.getAmount(),userOptional.get(),
                     request.getDaysToRepay(), request.getInterestRate());
         }else {
-               throw new UserNotFoundException(request.getBorrowerId());
+               throw new UserNotFoundException(borrower.getUsername());
         }
     }
 

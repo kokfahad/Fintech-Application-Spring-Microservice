@@ -9,8 +9,7 @@ import java.util.Objects;
 @Entity
 public final class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String username;
     private String firstName;
     private String lastName;
     private int age;
@@ -19,12 +18,16 @@ public final class User {
     public User() {
     }
 
-    public User(Long id,String firstName, String lastName, int age, String occupation) {
-        this.id = id;
+    public User(String username,String firstName, String lastName, int age, String occupation) {
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.occupation = occupation;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getFirstName() {
@@ -48,18 +51,19 @@ public final class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return age == user.age && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(occupation, user.occupation);
+        return age == user.age && Objects.equals(username, user.username) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(occupation, user.occupation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, age, occupation);
+        return Objects.hash(username, firstName, lastName, age, occupation);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "firstName='" + firstName + '\'' +
+                "username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", occupation='" + occupation + '\'' +

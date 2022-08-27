@@ -23,9 +23,9 @@ public class LoanService {
     @Autowired
     private LoanRepository loanRepository;
 
-    public void acceptLoan(final Long loanApplicationId, final Long lenderId){
-        User lender = userRepository.findById(lenderId).
-                orElseThrow(()-> new UserNotFoundException(lenderId));
+    public void acceptLoan(final Long loanApplicationId, String lenderUsername){
+        User lender = userRepository.findById(lenderUsername).
+                orElseThrow(()-> new UserNotFoundException(lenderUsername));
         LoanApplication loanApplication = loanApplicationRepository.findById(loanApplicationId).
                 orElseThrow(()-> new LoanApplicationNotFoundException(loanApplicationId));
         loanRepository.save(new Loan(lender,loanApplication));
