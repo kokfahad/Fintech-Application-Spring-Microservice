@@ -2,11 +2,14 @@ package com.fahad.lendingengine.config;
 
 
 
-import com.rabbitmq.client.ConnectionFactory;
+import com.fahad.lendingengine.event.UserRegisteredEventHandler;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,15 +29,24 @@ public class MessagingConfig {
         return new TopicExchange(TOPIC);
     }
 
-    @Bean
-    public  ConnectionFactory connectionFactory(){
-        ConnectionFactory connectionFactory = new ConnectionFactory();
-        return connectionFactory;
-    }
 
     @Bean
     public Binding binding(Queue queue, TopicExchange topicExchange){
         return BindingBuilder.bind(queue).to(topicExchange).with("user.#");
+    }
 
+    @Bean
+    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
+                                                    MessageListenerAdapter messageListenerAdapter){
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(QUEUE_NAME);
+        container.setMessageListener(messageListenerAdapter);
+        return container;
+    }
+
+    @Bean
+    public MessageListenerAdapter userRegisteredEventListener(UserRegisteredEventHandler userRegisteredEventHandler){
+        return new MessageListenerAdapter(userRegisteredEventHandler, "handleUserRegistration");
     }
 }
