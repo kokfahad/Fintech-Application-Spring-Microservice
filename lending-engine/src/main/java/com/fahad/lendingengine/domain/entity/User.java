@@ -1,9 +1,6 @@
 package com.fahad.lendingengine.domain.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -14,16 +11,20 @@ public final class User {
     private String lastName;
     private int age;
     private String occupation;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Balance balance;
 
     public User() {
     }
 
-    public User(String username,String firstName, String lastName, int age, String occupation) {
+    public User(String username,String firstName, String lastName, int age, String occupation
+    , Balance balance) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.occupation = occupation;
+        this.balance = balance;
     }
 
     public String getUsername() {
@@ -44,6 +45,18 @@ public final class User {
 
     public String getOccupation() {
         return occupation;
+    }
+
+    public Balance getBalance() {
+        return balance;
+    }
+
+    public void topUp(final Money money){
+       balance.topUp(money);
+    }
+
+    public void withDraw(final Money money){
+        balance.withdraw(money);
     }
 
     @Override

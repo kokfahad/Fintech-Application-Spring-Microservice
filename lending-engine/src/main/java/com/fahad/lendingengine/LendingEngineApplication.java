@@ -1,5 +1,6 @@
 package com.fahad.lendingengine;
 
+import com.fahad.lendingengine.domain.entity.Balance;
 import com.fahad.lendingengine.domain.entity.User;
 import com.fahad.lendingengine.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class LendingEngineApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		userRepository.save(new User("fahad","Fahad","Khan",26,"Software Engineer"));
-		userRepository.save(new User("nayan","Nayan","Ahmed",26,"Pilot"));
+		userRepository.save(new User("fahad","Fahad","Khan",26,"Software Engineer",new Balance()));
+		userRepository.save(new User("nayan","Nayan","Ahmed",26,"Pilot", new Balance()));
 	}
 }
